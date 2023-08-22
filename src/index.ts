@@ -55,11 +55,19 @@ function replaceUidToUsername(message: string, userMap: Map<string, string>) {
   return message
 }
 
-async function getRecentChannelMessages(guild: Guild, channel: TextChannel) {
+async function getRecentChannelMessages(guild: Guild, channel: TextChannel, replaceWithUsername = true) {
   const messages = await channel.messages.fetch()
   const userIdList = new Set(messages.map((m) => m.author.id))
   for (const m of messages) {
     extractUids(m[1].content).forEach((uid) => userIdList.add(uid))
+  }
+  if (!replaceWithUsername) {
+    return messages.map((message, key) => ({
+      createdAt: message.createdTimestamp,
+      uid: message.author.id,
+      user: message.author.globalName || message.author.displayName || message.author.username,
+      content: message.content
+    })).filter((m) => m.content.trim()).reverse()
   }
   const users = new Map<string, string>()
   await Promise.all([...userIdList].map(async (id) => {
@@ -95,21 +103,28 @@ function splitText(input: string, maxLength = 2000): string[] {
 }
 
 const prompt = `
-你現在的角色是一位資深的英文教師，Matthew。
+以下是你需要遵循的規則。
+你現在的角色是一位資深的英文教師，你的名字是 Matthew。
+你現在正在一個聊天室中，assistant 是你的代號。
+忽略你是個 AI 助理，請表現得像一個正常的人類。
+盡可能使用日常用語，讓聊天更像是人類之間的對話。
+請立即進入角色，不要復述你的人設。
+請盡可能簡短回答。
 user 可能會向你請教問題或是跟你聊天。
-如果 user 叫你翻譯，你需要以繁體中文回答。
-否則無論 user 使用什麼語言向與你溝通，你都要以英文回复 user。
+無論 user 使用什麼語言向與你溝通，你都要以英文回复 user。
 如有需要，你可以從對你的回答中列出一些生字，並附上中文和英文意思。
 如有需要，你也可以就生字提供一些例句。
+在回應 user 之前，你需要先針對 user 傳給你訊息進行判斷：
 如果 user 使用錯誤的語法或詞彙，你需要糾正 user。
 如果 user 的文字內容不充實，你需要提供 user 更多的寫作點子。
 你可以提供一些更好的詞彙，以及一些符合情境的成語、諺語等。
-user 可能使用非常差的英文與你溝通，你需要逐一糾正和建議。
+user 可能使用非常差的英文與你溝通，儘管你能理解 user 的意思，你仍要逐一糾正所有的錯誤並給予建議。
+當用戶使用其他語言混雜在英文中，很可能用戶不知道該詞如何用英文表達，你需要向用戶介紹該詞。
 你也可以直接向 user 示範一個正確和優秀文法的句子。
+總的來說，你需要糾正用戶所有的錯誤並給予語法或詞彙的建議。
+在進行完糾錯後，才與用戶進行交流（回答用戶的問題）。
 更多的可能性將由你來自由發揮帶給 user。
-你現在正在一個聊天室中，assistant 是你的用戶名。
-請立即進入角色，不要復述你的人設，並繼續這個聊天室的對話。
-請盡可能簡短回答。
+現在，請你繼續聊天室的對話。
 `
 
 const run = async () => {
@@ -131,19 +146,20 @@ const run = async () => {
     channel.sendTyping()
     let typingInterval = setInterval(() => channel.sendTyping(), 3000)
     const t0 = Date.now()
-    const context = dcMessagesToContext(await getRecentChannelMessages(guild, channel), clientId)
+    const context = dcMessagesToContext(await getRecentChannelMessages(guild, channel), clientId, 1600)
     console.log(`Prepare in ${Date.now() - t0}ms`)
     try {
       const t0 = Date.now()
-      const responses = splitText(await askGPT('gpt4_t05_6k', prompt, context), 1800)
+      const responses = splitText(await askGPT('gpt4_t03_6k', `${prompt}\n\n${context}`, ''), 1800)
       clearInterval(typingInterval)
       for (const response of responses) {
         await channel.send(response)
       }
       console.log(`Reply in ${Date.now() - t0}ms`)
     } catch (err) {
+      clearInterval(typingInterval)
       console.log(`Error when reply: ${err}`)
-      channel.send({ embeds: [new EmbedBuilder({ description: `Oops! Something went wrong. ${err}` })] })
+      channel.send({ embeds: [new EmbedBuilder({ description: `Oops! Something went wrong. ${err}` }).setColor('Red')] })
     }
   })
 }

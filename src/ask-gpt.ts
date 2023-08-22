@@ -42,12 +42,13 @@ function dcToOpenAIMessages (messages: DCMessage[], clientId: string): OpenAIMes
 function _messagesToContext (messages: OpenAIMessage[]) {
   return messages.map((m) => {
     return `${m.role}:\n${m.content}`
-  }).join('\n---\n')
+  }).join('\n\n')
 }
 function countTokensLength (text: string): number {
   return encoding_for_model('gpt-4').encode(text).length
 }
-function messagesToContext (messages: OpenAIMessage[], maxToken = 6000): string {
+function messagesToContext (messages: OpenAIMessage[], maxToken = 4000): string {
+  messages = [...messages]
   let context = _messagesToContext(messages)
   while (countTokensLength(context) > maxToken) {
     messages.shift()
@@ -56,7 +57,7 @@ function messagesToContext (messages: OpenAIMessage[], maxToken = 6000): string 
   return context
 }
 
-function dcMessagesToContext (messages: DCMessage[], clientId: string, maxToken = 6000): string {
+function dcMessagesToContext (messages: DCMessage[], clientId: string, maxToken = 4000): string {
   return messagesToContext(dcToOpenAIMessages(messages, clientId), maxToken)
 }
 
