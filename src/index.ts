@@ -89,7 +89,7 @@ class TeacherBot {
       channel.sendTyping()
       let typingInterval = setInterval(() => channel.sendTyping(), 3000)
       const t0 = Date.now()
-      const context = dcMessagesToContext(await getRecentChannelMessages(guild, channel), clientId, 5400 - countTokensLength(this.prompt))
+      const context = dcMessagesToContext(await getRecentChannelMessages(guild, channel), clientId, 4000 - countTokensLength(this.prompt))
       console.log(`${this.name} Prepare in ${Date.now() - t0}ms`)
       try {
         const t0 = Date.now()
