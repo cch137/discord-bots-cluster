@@ -116,11 +116,11 @@ class TeacherBot {
                 channel.sendTyping();
                 let typingInterval = setInterval(() => channel.sendTyping(), 3000);
                 const t0 = Date.now();
-                const context = (0, ask_gpt_1.dcMessagesToContext)(yield (0, utils_1.getRecentChannelMessages)(guild, channel), clientId, 4000 - (0, ask_gpt_1.countTokensLength)(this.prompt));
+                const context = (0, ask_gpt_1.dcMessagesToContext)(yield (0, utils_1.getRecentChannelMessages)(guild, channel), clientId, 4500 - (0, ask_gpt_1.countTokensLength)(this.prompt));
                 console.log(`${this.name} Prepare in ${Date.now() - t0}ms`);
                 try {
                     const t0 = Date.now();
-                    const responses = (0, utils_1.splitTextToChunks)(yield (0, ask_gpt_1.default)('gpt4_t03_6k', `${this.prompt}\n\n${context}`, ''), 1800);
+                    const responses = (0, utils_1.splitTextToChunks)(yield (0, ask_gpt_1.default)('gpt4_t03_5k', `${this.prompt}\n\n${context}`, ''), 1800);
                     clearInterval(typingInterval);
                     for (const response of responses) {
                         yield channel.send(response);
