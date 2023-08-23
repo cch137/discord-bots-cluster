@@ -2,7 +2,7 @@ import type { Guild, TextChannel } from 'discord.js'
 import { Client, IntentsBitField, EmbedBuilder } from 'discord.js'
 import askGPT, { countTokensLength, dcMessagesToContext } from './ask-gpt'
 import { BOT_TOKEN1, GUILD_ID1, CHANNEL_ID1, BOT_TOKEN2, GUILD_ID2, CHANNEL_ID2 } from './constants'
-import { getRecentChannelMessages, splitTextToChunks } from './utils';
+import { askCurva, getRecentChannelMessages, splitTextToChunks } from './utils';
 import { config as dotenvConfig } from 'dotenv'
 import { app, server } from './server.js';
 
@@ -104,7 +104,7 @@ class TeacherBot {
       console.log(`${this.name} Prepare in ${Date.now() - t0}ms`)
       try {
         const t0 = Date.now()
-        const responses = splitTextToChunks(await askGPT('gpt4_t03_4k', `${this.prompt}\n\n${context}`, ''), 1800)
+        const responses = splitTextToChunks(await askCurva('gpt4_t03_4k', `${this.prompt}\n\n${context}`, ''), 1800)
         clearInterval(typingInterval)
         for (const response of responses) {
           await channel.send(response)
