@@ -62,6 +62,7 @@ function dcMessagesToContext (messages: DCMessage[], clientId: string, maxToken 
 }
 
 export {
+  countTokensLength,
   dcToOpenAIMessages,
   messagesToContext,
   dcMessagesToContext,

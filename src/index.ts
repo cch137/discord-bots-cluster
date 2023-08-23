@@ -1,6 +1,6 @@
 import type { Guild, TextChannel } from 'discord.js'
 import { Client, IntentsBitField, EmbedBuilder } from 'discord.js'
-import askGPT, { dcMessagesToContext } from './ask-gpt'
+import askGPT, { countTokensLength, dcMessagesToContext } from './ask-gpt'
 import { BOT_TOKEN1, GUILD_ID1, CHANNEL_ID1, BOT_TOKEN2, GUILD_ID2, CHANNEL_ID2 } from './constants'
 import { getRecentChannelMessages, splitTextToChunks } from './utils';
 
@@ -11,7 +11,7 @@ function logDate (event = 'Started at', timeMs: number) {
 const startedAt = Date.now()
 logDate('Started at', startedAt)
 
-const matthewPrompt = `
+const englishPrompt = `
 以下是你需要遵循的規則。
 你現在的角色是一位資深的英文教師，你的名字是 Matthew。
 你現在正在一個聊天室中，assistant 是你的代號。
@@ -36,7 +36,7 @@ user 可能使用非常差的英文與你溝通，儘管你能理解 user 的意
 現在，請你繼續聊天室的對話。
 `
 
-const suzukiPrompt = matthewPrompt.replace('Matthew', '鈴木 あやか')
+const japanesePrompt = englishPrompt.replace('Matthew', '小林 なつみ')
   .replace(new RegExp('英文', 'g'), '日文')
 
 interface TeacherBotOptions {
@@ -89,7 +89,7 @@ class TeacherBot {
       channel.sendTyping()
       let typingInterval = setInterval(() => channel.sendTyping(), 3000)
       const t0 = Date.now()
-      const context = dcMessagesToContext(await getRecentChannelMessages(guild, channel), clientId, 1600)
+      const context = dcMessagesToContext(await getRecentChannelMessages(guild, channel), clientId, 5400 - countTokensLength(this.prompt))
       console.log(`${this.name} Prepare in ${Date.now() - t0}ms`)
       try {
         const t0 = Date.now()
@@ -113,14 +113,14 @@ const matthew = new TeacherBot({
   name: 'Matthew',
   guildId: GUILD_ID1,
   channelId: CHANNEL_ID1,
-  prompt: matthewPrompt
+  prompt: englishPrompt
 })
-const suzuki = new TeacherBot({
+const kobayashi = new TeacherBot({
   token: BOT_TOKEN2,
-  name: 'Suzuki Ayaka',
+  name: 'Kobayashi Natsumi',
   guildId: GUILD_ID2,
   channelId: CHANNEL_ID2,
-  prompt: suzukiPrompt
+  prompt: japanesePrompt
 })
 matthew.connect()
-suzuki.connect()
+kobayashi.connect()
