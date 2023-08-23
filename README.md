@@ -1,2 +1,2 @@
-# papayagpt-discord-bot
- 
+# discord-bot-teachers
+
