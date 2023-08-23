@@ -36,6 +36,14 @@ const discord_js_1 = require("discord.js");
 const ask_gpt_1 = __importStar(require("./ask-gpt"));
 const constants_1 = require("./constants");
 const utils_1 = require("./utils");
+const dotenv_1 = require("dotenv");
+const server_js_1 = require("./server.js");
+(0, dotenv_1.config)();
+const port = process.env.PORT || 3000;
+server_js_1.server.listen(port, () => {
+    console.log(`Server is listening to http://localhost:${port}`);
+});
+server_js_1.app.use('*', (req, res) => res.status(404).end());
 function logDate(event = 'Started at', timeMs) {
     console.log(`${event}:`, new Date(timeMs).toString());
 }

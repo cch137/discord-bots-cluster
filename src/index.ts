@@ -3,6 +3,17 @@ import { Client, IntentsBitField, EmbedBuilder } from 'discord.js'
 import askGPT, { countTokensLength, dcMessagesToContext } from './ask-gpt'
 import { BOT_TOKEN1, GUILD_ID1, CHANNEL_ID1, BOT_TOKEN2, GUILD_ID2, CHANNEL_ID2 } from './constants'
 import { getRecentChannelMessages, splitTextToChunks } from './utils';
+import { config as dotenvConfig } from 'dotenv'
+import { app, server } from './server.js';
+
+dotenvConfig()
+
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  console.log(`Server is listening to http://localhost:${port}`);
+});
+
+app.use('*', (req, res) => res.status(404).end())
 
 function logDate (event = 'Started at', timeMs: number) {
   console.log(`${event}:`, new Date(timeMs).toString())
