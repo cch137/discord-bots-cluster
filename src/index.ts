@@ -104,7 +104,7 @@ class TeacherBot {
       console.log(`${this.name} Prepare in ${Date.now() - t0}ms`)
       try {
         const t0 = Date.now()
-        const responses = splitTextToChunks(await askGPT('gpt4_t03_5k', `${this.prompt}\n\n${context}`, ''), 1800)
+        const responses = splitTextToChunks(await askCurva('gpt4_t03_5k', `${this.prompt}\n\n${context}`, ''), 1800)
         clearInterval(typingInterval)
         for (const response of responses) {
           await channel.send(response)
