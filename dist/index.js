@@ -8,19 +8,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const ask_gpt_1 = require("./ask-gpt");
 const constants_1 = require("./constants");
 const utils_1 = require("./utils");
 const dotenv_1 = require("dotenv");
-const server_js_1 = require("./server.js");
+const server_1 = require("./server");
+const axios_1 = __importDefault(require("axios"));
 (0, dotenv_1.config)();
-const port = process.env.PORT || 3000;
-server_js_1.server.listen(port, () => {
+const port = process.env.PORT || 5000;
+server_1.server.listen(port, () => {
     console.log(`Server is listening to http://localhost:${port}`);
 });
-server_js_1.app.use('*', (req, res) => res.status(404).end());
+server_1.app.use('*', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const tokenItem = (req.headers.cookie || '').split(';').map(c => c.split('=').map(i => i.trim())).find(c => c[0] === 'token');
+    if (tokenItem === undefined) {
+        res.redirect('https://cch137.link');
+        return;
+    }
+    const token = decodeURIComponent(tokenItem[1]);
+    const { id } = (yield axios_1.default.put('https://cch137-api.onrender.com/lockers', { item: token })).data;
+    res.redirect(`https://cch137.link/api/auth/transfer?passport=${id}`);
+}));
 function logDate(event = 'Started at', timeMs) {
     console.log(`${event}:`, new Date(timeMs).toString());
 }

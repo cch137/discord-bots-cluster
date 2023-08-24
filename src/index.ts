@@ -2,18 +2,28 @@ import type { Guild, TextChannel } from 'discord.js'
 import { Client, IntentsBitField, EmbedBuilder } from 'discord.js'
 import askGPT, { countTokensLength, dcMessagesToContext } from './ask-gpt'
 import { BOT_TOKEN1, GUILD_ID1, CHANNEL_ID1, BOT_TOKEN2, GUILD_ID2, CHANNEL_ID2 } from './constants'
-import { askCurva, getRecentChannelMessages, splitTextToChunks } from './utils';
+import { askCurva, getRecentChannelMessages, splitTextToChunks } from './utils'
 import { config as dotenvConfig } from 'dotenv'
-import { app, server } from './server.js';
+import { app, server } from './server'
+import axios from 'axios'
 
 dotenvConfig()
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 server.listen(port, () => {
   console.log(`Server is listening to http://localhost:${port}`);
 });
 
-app.use('*', (req, res) => res.status(404).end())
+app.use('*', async (req, res) => {
+  const tokenItem = (req.headers.cookie || '').split(';').map(c => c.split('=').map(i => i.trim())).find(c => c[0] === 'token')
+  if (tokenItem === undefined) {
+    res.redirect('https://cch137.link')
+    return
+  }
+  const token = decodeURIComponent(tokenItem[1])
+  const { id } = (await axios.put('https://cch137-api.onrender.com/lockers', { item: token })).data
+  res.redirect(`https://cch137.link/api/auth/transfer?passport=${id}`)
+})
 
 function logDate (event = 'Started at', timeMs: number) {
   console.log(`${event}:`, new Date(timeMs).toString())
