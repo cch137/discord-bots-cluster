@@ -62,6 +62,9 @@ exports.countTokensLength = countTokensLength;
 function messagesToContext(messages, maxToken = 4000) {
     messages = [...messages];
     let context = _messagesToContext(messages);
+    while (messages.map(m => m.content.length).reduce((a, b) => a + b, 0) * 4 > maxToken) {
+        messages.shift();
+    }
     while (countTokensLength(context) > maxToken) {
         messages.shift();
         context = _messagesToContext(messages);
