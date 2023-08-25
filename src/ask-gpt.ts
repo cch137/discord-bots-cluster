@@ -49,15 +49,11 @@ function countTokensLength (text: string): number {
 }
 function messagesToContext (messages: OpenAIMessage[], maxToken = 4000): string {
   messages = [...messages]
-  let context = _messagesToContext(messages)
-  while (messages.map(m => m.content.length).reduce((a, b) => a + b, 0) * 4 > maxToken) {
+  const countedMessages = messages.map(m => ({ tokens: countTokensLength(m.content) + 10, ...m }))
+  while (countedMessages.map(m => m.tokens).reduce((a, b) => a + b, 0) > maxToken) {
     messages.shift()
   }
-  while (countTokensLength(context) > maxToken) {
-    messages.shift()
-    context = _messagesToContext(messages)
-  }
-  return context
+  return _messagesToContext(messages)
 }
 
 function dcMessagesToContext (messages: DCMessage[], clientId: string, maxToken = 4000): string {
