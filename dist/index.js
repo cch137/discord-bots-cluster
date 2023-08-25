@@ -100,11 +100,15 @@ class TeacherBot {
                     return;
                 if (message.channelId !== channel.id)
                     return;
+                console.log(`${this.name} Received a message.`);
                 channel.sendTyping();
-                let typingInterval = setInterval(() => channel.sendTyping(), 3000);
+                let typingInterval = setInterval(() => channel.sendTyping(), 5000);
                 const t0 = Date.now();
-                const context = (0, ask_gpt_1.dcMessagesToContext)(yield (0, utils_1.getRecentChannelMessages)(guild, channel), clientId, 4800 - (0, ask_gpt_1.countTokensLength)(this.prompt));
-                console.log(`${this.name} Prepare in ${Date.now() - t0}ms`);
+                const messages = yield (0, utils_1.getRecentChannelMessages)(guild, channel);
+                console.log(`${this.name} Fetched ${messages.length} messages in ${Date.now() - t0}ms`);
+                const t1 = Date.now();
+                const context = (0, ask_gpt_1.dcMessagesToContext)(messages, clientId, 4800 - (0, ask_gpt_1.countTokensLength)(this.prompt));
+                console.log(`${this.name} Prepare in ${Date.now() - t1}ms`);
                 try {
                     const t0 = Date.now();
                     const responses = (0, utils_1.splitTextToChunks)(yield (0, utils_1.askCurva)('gpt4_t03_5k', `${this.prompt}\n\n${context}`, ''), 1800);

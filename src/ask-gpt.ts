@@ -44,12 +44,15 @@ function _messagesToContext (messages: OpenAIMessage[]) {
     return `${m.role}:\n${m.content}`
   }).join('\n\n')
 }
+
+const gpt4Tiktoken = encoding_for_model('gpt-4')
 function countTokensLength (text: string): number {
-  return encoding_for_model('gpt-4').encode(text).length
+  return gpt4Tiktoken.encode(text).length
 }
+
 function messagesToContext (messages: OpenAIMessage[], maxToken = 4000): string {
   messages = [...messages]
-  const countedMessages = messages.map(m => ({ tokens: countTokensLength(m.content) + 10, ...m }))
+  const countedMessages = messages.map((m) => ({ tokens: countTokensLength(m.content) + 10, ...m }))
   while (countedMessages.map(m => m.tokens).reduce((a, b) => a + b, 0) > maxToken) {
     countedMessages.shift()
   }

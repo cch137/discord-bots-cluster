@@ -55,13 +55,14 @@ function _messagesToContext(messages) {
         return `${m.role}:\n${m.content}`;
     }).join('\n\n');
 }
+const gpt4Tiktoken = (0, tiktoken_1.encoding_for_model)('gpt-4');
 function countTokensLength(text) {
-    return (0, tiktoken_1.encoding_for_model)('gpt-4').encode(text).length;
+    return gpt4Tiktoken.encode(text).length;
 }
 exports.countTokensLength = countTokensLength;
 function messagesToContext(messages, maxToken = 4000) {
     messages = [...messages];
-    const countedMessages = messages.map(m => (Object.assign({ tokens: countTokensLength(m.content) + 10 }, m)));
+    const countedMessages = messages.map((m) => (Object.assign({ tokens: countTokensLength(m.content) + 10 }, m)));
     while (countedMessages.map(m => m.tokens).reduce((a, b) => a + b, 0) > maxToken) {
         countedMessages.shift();
     }

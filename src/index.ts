@@ -104,11 +104,15 @@ class TeacherBot {
     client.on('messageCreate', async (message) => {
       if (message.author.id === clientId) return;
       if (message.channelId !== channel.id) return;
+      console.log(`${this.name} Received a message.`)
       channel.sendTyping()
-      let typingInterval = setInterval(() => channel.sendTyping(), 3000)
+      let typingInterval = setInterval(() => channel.sendTyping(), 5000)
       const t0 = Date.now()
-      const context = dcMessagesToContext(await getRecentChannelMessages(guild, channel), clientId, 4800 - countTokensLength(this.prompt))
-      console.log(`${this.name} Prepare in ${Date.now() - t0}ms`)
+      const messages = await getRecentChannelMessages(guild, channel)
+      console.log(`${this.name} Fetched ${messages.length} messages in ${Date.now() - t0}ms`)
+      const t1 = Date.now()
+      const context = dcMessagesToContext(messages, clientId, 4800 - countTokensLength(this.prompt))
+      console.log(`${this.name} Prepare in ${Date.now() - t1}ms`)
       try {
         const t0 = Date.now()
         const responses = splitTextToChunks(await askCurva('gpt4_t03_5k', `${this.prompt}\n\n${context}`, ''), 1800)
