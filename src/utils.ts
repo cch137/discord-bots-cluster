@@ -48,7 +48,7 @@ async function getRecentChannelMessages(guild: Guild, channel: TextChannel, repl
 }
 
 async function askCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
-  const res = await fetch('https://ch4.onrender.com/api/curva/express', {
+  const res = await fetch('https://cch137.link/api/curva/express', {
     method: 'POST',
     body: JSON.stringify({ key: CURVA_API_KEY, modelName, question, context })
   })

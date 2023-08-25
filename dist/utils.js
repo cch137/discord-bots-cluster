@@ -59,7 +59,7 @@ function getRecentChannelMessages(guild, channel, replaceWithUsername = true) {
 exports.getRecentChannelMessages = getRecentChannelMessages;
 function askCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = yield fetch('https://ch4.onrender.com/api/curva/express', {
+        const res = yield fetch('https://cch137.link/api/curva/express', {
             method: 'POST',
             body: JSON.stringify({ key: constants_1.CURVA_API_KEY, modelName, question, context })
         });
