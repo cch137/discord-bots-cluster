@@ -63,9 +63,9 @@ function messagesToContext(messages, maxToken = 4000) {
     messages = [...messages];
     const countedMessages = messages.map(m => (Object.assign({ tokens: countTokensLength(m.content) + 10 }, m)));
     while (countedMessages.map(m => m.tokens).reduce((a, b) => a + b, 0) > maxToken) {
-        messages.shift();
+        countedMessages.shift();
     }
-    return _messagesToContext(messages);
+    return _messagesToContext(countedMessages.map(m => ({ role: m.role, content: m.content })));
 }
 exports.messagesToContext = messagesToContext;
 function dcMessagesToContext(messages, clientId, maxToken = 4000) {

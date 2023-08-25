@@ -4,6 +4,8 @@ import { Client, IntentsBitField, EmbedBuilder } from 'discord.js'
 import askGPT, { dcMessagesToContext } from './ask-gpt'
 import { CURVA_API_KEY } from './constants'
 
+const useNickname = false
+
 const uidRegex = /<@(\d+)>/g;
 function extractUids(message: string): string[] {
   const matches = message.match(uidRegex)
@@ -19,10 +21,11 @@ function replaceUidToUsername(message: string, userMap: Map<string, string>) {
 }
 
 async function getRecentChannelMessages(guild: Guild, channel: TextChannel, replaceWithUsername = true) {
-  const messages = await channel.messages.fetch()
+  const messages = (await channel.messages.fetch()).map(m => m)
+  channel.messages.cache.clear()
   const userIdList = new Set(messages.map((m) => m.author.id))
   for (const m of messages) {
-    extractUids(m[1].content).forEach((uid) => userIdList.add(uid))
+    extractUids(m.content).forEach((uid) => userIdList.add(uid))
   }
   if (!replaceWithUsername) {
     return messages.map((message, key) => ({
@@ -34,11 +37,13 @@ async function getRecentChannelMessages(guild: Guild, channel: TextChannel, repl
   }
   const users = new Map<string, string>()
   await Promise.all([...userIdList].map(async (id) => {
-    const user = await guild.members.fetch({ user: id })
-    const { nickname } = user
-    const { globalName, displayName, username } = user.user
+    const guildUser = useNickname ? await guild.members.fetch({ user: id }) : null
+    const user = guildUser ? guildUser.user : messages.find(m => m.author.id === id)!.author
+    const nickname = guildUser?.nickname || ''
+    const { globalName = '', displayName = '', username = '' } = user
     users.set(id, nickname || globalName || displayName || username)
   }))
+  guild.members.cache.clear()
   return messages.map((message, key) => ({
     createdAt: message.createdTimestamp,
     uid: message.author.id,

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.splitTextToChunks = exports.askCurva = exports.getRecentChannelMessages = exports.replaceUidToUsername = exports.extractUids = void 0;
 const constants_1 = require("./constants");
+const useNickname = false;
 const uidRegex = /<@(\d+)>/g;
 function extractUids(message) {
     const matches = message.match(uidRegex);
@@ -28,10 +29,11 @@ function replaceUidToUsername(message, userMap) {
 exports.replaceUidToUsername = replaceUidToUsername;
 function getRecentChannelMessages(guild, channel, replaceWithUsername = true) {
     return __awaiter(this, void 0, void 0, function* () {
-        const messages = yield channel.messages.fetch();
+        const messages = (yield channel.messages.fetch()).map(m => m);
+        channel.messages.cache.clear();
         const userIdList = new Set(messages.map((m) => m.author.id));
         for (const m of messages) {
-            extractUids(m[1].content).forEach((uid) => userIdList.add(uid));
+            extractUids(m.content).forEach((uid) => userIdList.add(uid));
         }
         if (!replaceWithUsername) {
             return messages.map((message, key) => ({
@@ -43,11 +45,13 @@ function getRecentChannelMessages(guild, channel, replaceWithUsername = true) {
         }
         const users = new Map();
         yield Promise.all([...userIdList].map((id) => __awaiter(this, void 0, void 0, function* () {
-            const user = yield guild.members.fetch({ user: id });
-            const { nickname } = user;
-            const { globalName, displayName, username } = user.user;
+            const guildUser = useNickname ? yield guild.members.fetch({ user: id }) : null;
+            const user = guildUser ? guildUser.user : messages.find(m => m.author.id === id).author;
+            const nickname = (guildUser === null || guildUser === void 0 ? void 0 : guildUser.nickname) || '';
+            const { globalName = '', displayName = '', username = '' } = user;
             users.set(id, nickname || globalName || displayName || username);
         })));
+        guild.members.cache.clear();
         return messages.map((message, key) => ({
             createdAt: message.createdTimestamp,
             uid: message.author.id,
