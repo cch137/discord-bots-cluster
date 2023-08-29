@@ -115,9 +115,9 @@ class TextBot extends BotDriver_1.default {
                     createdAt: message.createdTimestamp,
                     uid: message.author.id,
                     user: mappedUidUsername.get(message.author.id) || 'anonymous',
-                    content: message.content
+                    content: message.content.trim()
                 }))
-                    .filter((m) => m.content.trim())
+                    .filter((m) => m.content)
                     .reverse();
             }
             (0, log_text_1.default)(`${this.name} Fetched ${messages.length} messages in ${Date.now() - t0}ms`);
@@ -126,9 +126,9 @@ class TextBot extends BotDriver_1.default {
                 createdAt: message.createdTimestamp,
                 uid: message.author.id,
                 user: message.author.globalName || message.author.displayName || message.author.username,
-                content: message.content
+                content: message.content.trim()
             }))
-                .filter((m) => m.content.trim())
+                .filter((m) => m.content)
                 .reverse();
         });
     }
