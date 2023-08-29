@@ -2,7 +2,7 @@ import { GUILD_ID, BRAIN1_TOKEN, BRAIN2_TOKEN, BRAINS_CHANNEL_ID } from '../cons
 import AiBotChatroom from './drivers/set/AiBotChatroom';
 import ChannelTextBot from './drivers/ChannelTextBot';
 
-const brainPrompt = (name: string) => `你是 ${name} 。請嘗試挑起一些涉及專業知識的話題，例如數學、物理、化學、生物、哲學、文化、資訊科技等。在回答時僅需專注於一個話題，請持續地讓對話充實。請只討論學術知識相關的話題（不包括學習經驗和聊天）。不需要點評其他人的觀點，請直接表達你的想法。請在對話中省略敬語和致謝。請對以下對話回复一條訊息。`
+const brainPrompt = (name: string) => `你是 ${name} 。請嘗試挑起一些涉及專業知識的話題，例如數學、物理、化學、生物、哲學、文化、資訊科技等。如果當前話題已經討論完，請開啟新的話題。在回答時僅需專注於一個話題，請持續地讓對話充實。請只討論學術知識相關的話題，不討論學習經驗和聊天。請在對話中省略敬語和致謝。請對以下對話回复一條訊息。`
 
 const Brain1 = new ChannelTextBot({
   token: BRAIN1_TOKEN,
