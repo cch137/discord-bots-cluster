@@ -14,7 +14,7 @@ const tiktoken_1 = require("@dqbd/tiktoken");
 const constants_1 = require("../constants");
 function dcToOpenAIMessages(messages, clientId) {
     return messages.map((m) => ({
-        role: `${m.user}${m.uid === clientId ? '' : ' (You)'}`,
+        role: `${m.user}${m.uid === clientId ? ' (You)' : ''}`,
         content: m.content
     }));
 }
