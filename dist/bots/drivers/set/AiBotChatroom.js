@@ -26,7 +26,7 @@ var _AiBotChatroom_lastRespondStartedAt, _AiBotChatroom_isResponding;
 Object.defineProperty(exports, "__esModule", { value: true });
 const ChannelTextBotSet_1 = __importDefault(require("./ChannelTextBotSet"));
 class AiBotChatroom extends ChannelTextBotSet_1.default {
-    constructor(bots = [], cooldownMs = 15 * 60 * 1000) {
+    constructor(bots = [], cooldownMs = 5 * 60 * 1000) {
         super(bots);
         _AiBotChatroom_lastRespondStartedAt.set(this, 0);
         _AiBotChatroom_isResponding.set(this, false);

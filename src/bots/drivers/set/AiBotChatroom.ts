@@ -6,7 +6,7 @@ class AiBotChatroom extends ChannelTextBotSet<ChannelTextBot> {
   #isResponding = false;
   cooldownMs: number;
 
-  constructor (bots: ChannelTextBot[] = [], cooldownMs = 15 * 60 * 1000) {
+  constructor (bots: ChannelTextBot[] = [], cooldownMs = 5 * 60 * 1000) {
     super(bots);
     this.cooldownMs = cooldownMs;
   }
