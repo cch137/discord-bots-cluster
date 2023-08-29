@@ -4,7 +4,7 @@ import { CURVA_API_KEY } from '../constants'
 
 function dcToOpenAIMessages (messages: DCMessage[], clientId: string): OpenAIMessage[] {
   return messages.map((m) => ({
-    role: m.uid === clientId ? 'assistant' : `@${m.user}`,
+    role: m.uid === clientId ? 'assistant' : `${m.user}`,
     content: m.content
   }))
 }
