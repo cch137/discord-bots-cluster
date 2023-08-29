@@ -1,8 +1,8 @@
 import { GUILD_ID, BOT_TOKEN1, CHANNEL_ID1 } from '../constants';
-import TextChannelHost from './drivers/TextChannelHost';
+import AutomatedReplyChannelTextBot from './drivers/AutomatedReplyChannelTextBot';
 import languageTeacher from './prompts/language-teacher';
 
-const MrMatthew = new TextChannelHost({
+const MrMatthew = new AutomatedReplyChannelTextBot({
   token: BOT_TOKEN1,
   guildId: GUILD_ID,
   channelId: CHANNEL_ID1,

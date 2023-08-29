@@ -44,6 +44,8 @@ function dcMessagesToContext(messages, clientId, maxToken = 4000) {
 exports.dcMessagesToContext = dcMessagesToContext;
 function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
     return __awaiter(this, void 0, void 0, function* () {
+        question = question.trim();
+        context = context.trim();
         const res = yield fetch('https://cch137.link/api/curva/express', {
             method: 'POST',
             body: JSON.stringify({ key: constants_1.CURVA_API_KEY, modelName, question, context })

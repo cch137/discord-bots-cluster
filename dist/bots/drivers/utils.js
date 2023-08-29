@@ -17,13 +17,13 @@ function _extractUids(message) {
         ? matches.map(match => match.replace(/<@|>/g, ''))
         : [];
 }
-function createMappedUidUsername(guild, messages, usingNickname = false) {
+function createMappedUidUsername(messages, usingNickname = false, guild) {
     return __awaiter(this, void 0, void 0, function* () {
         const userIdList = new Set(messages.map((m) => m.author.id));
         messages.forEach(m => _extractUids(m.content).forEach((uid) => userIdList.add(uid)));
         const mappedUidUsername = new Map();
         yield Promise.all([...userIdList].map((id) => __awaiter(this, void 0, void 0, function* () {
-            const guildUser = usingNickname ? yield guild.members.fetch({ user: id }) : null;
+            const guildUser = (usingNickname && guild) ? yield guild.members.fetch({ user: id }) : null;
             const user = guildUser ? guildUser.user : messages.find(m => m.author.id === id).author;
             const nickname = (guildUser === null || guildUser === void 0 ? void 0 : guildUser.nickname) || '';
             const { globalName = '', displayName = '', username = '' } = user;

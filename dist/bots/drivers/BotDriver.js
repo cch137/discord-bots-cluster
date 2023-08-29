@@ -26,7 +26,6 @@ var _BotDriver_token;
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const log_date_1 = __importDefault(require("../../utils/log-date"));
-const utils_1 = require("./utils");
 class BotDriver {
     constructor(token) {
         _BotDriver_token.set(this, void 0);
@@ -52,6 +51,9 @@ class BotDriver {
         var _a;
         return (_a = this.client.user) === null || _a === void 0 ? void 0 : _a.username;
     }
+    get name() {
+        return this.username;
+    }
     get id() {
         return this.client.user.id;
     }
@@ -59,40 +61,13 @@ class BotDriver {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.client.login(__classPrivateFieldGet(this, _BotDriver_token, "f"));
             this.loggedInAt = Date.now();
-            (0, log_date_1.default)(`${this.username} Logged in at`, this.loggedInAt);
+            (0, log_date_1.default)(`${this.name} Logged in at`, this.loggedInAt);
         });
     }
     disconnect() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.client.destroy();
-            (0, log_date_1.default)(`${this.username} Logged out at`, Date.now());
-        });
-    }
-    getRecentChannelMessages(guild, channel, replaceWithUsername = true) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const messages = (yield channel.messages.fetch()).map(m => m);
-            channel.messages.cache.clear();
-            if (!replaceWithUsername) {
-                return messages
-                    .map((message) => ({
-                    createdAt: message.createdTimestamp,
-                    uid: message.author.id,
-                    user: message.author.globalName || message.author.displayName || message.author.username,
-                    content: message.content
-                }))
-                    .filter((m) => m.content.trim())
-                    .reverse();
-            }
-            const mappedUidUsername = yield (0, utils_1.createMappedUidUsername)(guild, messages);
-            return (0, utils_1.replaceMessagesUserPingToUsername)(messages, mappedUidUsername)
-                .map((message) => ({
-                createdAt: message.createdTimestamp,
-                uid: message.author.id,
-                user: mappedUidUsername.get(message.author.id) || 'anonymous',
-                content: message.content
-            }))
-                .filter((m) => m.content.trim())
-                .reverse();
+            (0, log_date_1.default)(`${this.name} Logged out at`, Date.now());
         });
     }
 }

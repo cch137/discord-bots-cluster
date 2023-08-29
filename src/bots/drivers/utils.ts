@@ -8,12 +8,12 @@ function _extractUids(message: string): string[] {
     : []
 }
 
-async function createMappedUidUsername(guild: Guild, messages: Message<true>[], usingNickname = false) {
+async function createMappedUidUsername(messages: Message<true>[], usingNickname = false, guild?: Guild) {
   const userIdList = new Set(messages.map((m) => m.author.id));
   messages.forEach(m => _extractUids(m.content).forEach((uid) => userIdList.add(uid)));
   const mappedUidUsername = new Map<string, string>();
   await Promise.all([...userIdList].map(async (id) => {
-    const guildUser = usingNickname ? await guild.members.fetch({ user: id }) : null;
+    const guildUser = (usingNickname && guild) ? await guild.members.fetch({ user: id }) : null;
     const user = guildUser ? guildUser.user : messages.find(m => m.author.id === id)!.author;
     const nickname = guildUser?.nickname || '';
     const { globalName = '', displayName = '', username = '' } = user;

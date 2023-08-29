@@ -1,7 +1,5 @@
-import type { Guild, TextChannel } from 'discord.js';
 import { Client, IntentsBitField } from 'discord.js'
 import logDate from '../../utils/log-date';
-import { createMappedUidUsername, replaceMessagesUserPingToUsername } from './utils';
 
 class BotDriver {
   #token: string;
@@ -32,6 +30,10 @@ class BotDriver {
     return this.client.user?.username
   }
 
+  get name() {
+    return this.username
+  }
+
   get id () {
     return this.client.user!.id
   }
@@ -39,38 +41,12 @@ class BotDriver {
   async connect() {
     await this.client.login(this.#token);
     this.loggedInAt = Date.now()
-    logDate(`${this.username} Logged in at`, this.loggedInAt);
+    logDate(`${this.name} Logged in at`, this.loggedInAt);
   }
 
   async disconnect() {
     await this.client.destroy();
-    logDate(`${this.username} Logged out at`, Date.now());
-  }
-
-  async getRecentChannelMessages(guild: Guild, channel: TextChannel, replaceWithUsername = true) {
-    const messages = (await channel.messages.fetch()).map(m => m)
-    channel.messages.cache.clear()
-    if (!replaceWithUsername) {
-      return messages
-        .map((message) => ({
-          createdAt: message.createdTimestamp,
-          uid: message.author.id,
-          user: message.author.globalName || message.author.displayName || message.author.username,
-          content: message.content
-        }))
-          .filter((m) => m.content.trim())
-          .reverse()
-    }
-    const mappedUidUsername = await createMappedUidUsername(guild, messages)
-    return replaceMessagesUserPingToUsername(messages, mappedUidUsername)
-      .map((message) => ({
-        createdAt: message.createdTimestamp,
-        uid: message.author.id,
-        user: mappedUidUsername.get(message.author.id) || 'anonymous',
-        content: message.content
-      }))
-      .filter((m) => m.content.trim())
-      .reverse()
+    logDate(`${this.name} Logged out at`, Date.now());
   }
 }
 

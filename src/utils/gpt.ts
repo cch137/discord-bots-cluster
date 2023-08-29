@@ -1,4 +1,4 @@
-import type { DCMessage, OpenAIMessage } from './types'
+import type { DCMessage, OpenAIMessage } from '../types'
 import { encoding_for_model } from '@dqbd/tiktoken'
 import { CURVA_API_KEY } from '../constants'
 
@@ -34,10 +34,12 @@ function dcMessagesToContext (messages: DCMessage[], clientId: string, maxToken 
 }
 
 async function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
+  question = question.trim();
+  context = context.trim();
   const res = await fetch('https://cch137.link/api/curva/express', {
     method: 'POST',
     body: JSON.stringify({ key: CURVA_API_KEY, modelName, question, context })
-  })
+  });
   const { answer, error } = await res.json() as { answer: string, error: string }
   if (error) throw error
   return answer
