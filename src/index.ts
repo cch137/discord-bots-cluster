@@ -5,7 +5,7 @@ import logDate from './utils/log-date'
 
 const port = process.env.PORT || 5000;
 
-bots.initAll();
+// bots.initAll();
 
 server.listen(port, () => {
   oldSiteRedirect();
