@@ -2,7 +2,7 @@ import ChannelTextBotSet from './ChannelTextBotSet';
 import type ChannelTextBot from '../ChannelTextBot';
 
 class AiBotChatroom extends ChannelTextBotSet<ChannelTextBot> {
-  #lastResondedAt = 0;
+  #lastRespondStartedAt = 0;
   #isResponding = false;
   cooldownMs: number;
 
@@ -13,24 +13,23 @@ class AiBotChatroom extends ChannelTextBotSet<ChannelTextBot> {
 
   async init() {
     await ChannelTextBotSet.prototype.init.call(this);
-    this.run();
+    await this.run();
   }
 
   async run() {
     if (this.#isResponding) return;
     this.#isResponding = true;
     const nextBot = await this.getNextBot();
+    this.#lastRespondStartedAt = Date.now();
     nextBot.respondInChannelAsCurva()
       .then(() => {
         this.#isResponding = false;
-        const now = Date.now();
-        if (this.#lastResondedAt + this.cooldownMs < now) {
+        if (this.#lastRespondStartedAt + this.cooldownMs < Date.now()) {
           setTimeout(() => this.run(), 0);
         } else {
-          const nextRunAt = this.#lastResondedAt + this.cooldownMs;
-          setTimeout(() => this.run(), nextRunAt - now);
+          const nextRunAt = this.#lastRespondStartedAt + this.cooldownMs;
+          setTimeout(() => this.run(), nextRunAt - Date.now());
         }
-        this.#lastResondedAt = now;
       })
   }
 

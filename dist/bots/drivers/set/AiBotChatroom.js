@@ -22,20 +22,20 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _AiBotChatroom_lastResondedAt, _AiBotChatroom_isResponding;
+var _AiBotChatroom_lastRespondStartedAt, _AiBotChatroom_isResponding;
 Object.defineProperty(exports, "__esModule", { value: true });
 const ChannelTextBotSet_1 = __importDefault(require("./ChannelTextBotSet"));
 class AiBotChatroom extends ChannelTextBotSet_1.default {
     constructor(bots = [], cooldownMs = 15 * 60 * 1000) {
         super(bots);
-        _AiBotChatroom_lastResondedAt.set(this, 0);
+        _AiBotChatroom_lastRespondStartedAt.set(this, 0);
         _AiBotChatroom_isResponding.set(this, false);
         this.cooldownMs = cooldownMs;
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             yield ChannelTextBotSet_1.default.prototype.init.call(this);
-            this.run();
+            yield this.run();
         });
     }
     run() {
@@ -44,18 +44,17 @@ class AiBotChatroom extends ChannelTextBotSet_1.default {
                 return;
             __classPrivateFieldSet(this, _AiBotChatroom_isResponding, true, "f");
             const nextBot = yield this.getNextBot();
+            __classPrivateFieldSet(this, _AiBotChatroom_lastRespondStartedAt, Date.now(), "f");
             nextBot.respondInChannelAsCurva()
                 .then(() => {
                 __classPrivateFieldSet(this, _AiBotChatroom_isResponding, false, "f");
-                const now = Date.now();
-                if (__classPrivateFieldGet(this, _AiBotChatroom_lastResondedAt, "f") + this.cooldownMs < now) {
+                if (__classPrivateFieldGet(this, _AiBotChatroom_lastRespondStartedAt, "f") + this.cooldownMs < Date.now()) {
                     setTimeout(() => this.run(), 0);
                 }
                 else {
-                    const nextRunAt = __classPrivateFieldGet(this, _AiBotChatroom_lastResondedAt, "f") + this.cooldownMs;
-                    setTimeout(() => this.run(), nextRunAt - now);
+                    const nextRunAt = __classPrivateFieldGet(this, _AiBotChatroom_lastRespondStartedAt, "f") + this.cooldownMs;
+                    setTimeout(() => this.run(), nextRunAt - Date.now());
                 }
-                __classPrivateFieldSet(this, _AiBotChatroom_lastResondedAt, now, "f");
             });
         });
     }
@@ -67,5 +66,5 @@ class AiBotChatroom extends ChannelTextBotSet_1.default {
         });
     }
 }
-_AiBotChatroom_lastResondedAt = new WeakMap(), _AiBotChatroom_isResponding = new WeakMap();
+_AiBotChatroom_lastRespondStartedAt = new WeakMap(), _AiBotChatroom_isResponding = new WeakMap();
 exports.default = AiBotChatroom;
