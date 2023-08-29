@@ -1,5 +1,6 @@
 import type { Guild, TextChannel } from 'discord.js';
 import TextBot from './TextBot';
+import type { DCMessage } from '../../types';
 
 interface ChannelTextBotCreateOptions {
   token: string;
@@ -52,8 +53,14 @@ class ChannelTextBot extends TextBot {
     }
   }
 
-  getRecentChannelMessages() {
-    return TextBot.prototype.getRecentChannelMessages.call(this, this.channel);
+  getRecentChannelMessages(limit?: number, replaceWithUsername?: boolean): Promise<DCMessage[]>;
+  getRecentChannelMessages(channel: TextChannel, limit?: number, replaceWithUsername?: boolean): Promise<DCMessage[]>;
+  getRecentChannelMessages(arg1?: TextChannel | number, arg2?: number | boolean, arg3?: boolean): Promise<DCMessage[]> {
+    if (arg1 !== undefined && typeof arg1 !== 'number') {
+      return TextBot.prototype.getRecentChannelMessages.call(this, arg1, arg2 as number, arg3);
+    } else {
+      return TextBot.prototype.getRecentChannelMessages.call(this, this.channel, arg1 as number, arg2 as boolean);
+    }
   }
 
   startTyping() {

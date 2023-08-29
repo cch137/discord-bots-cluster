@@ -41,12 +41,12 @@ const _getTyping = (() => {
         }
         startTyping() {
             const uuid = (0, uuid_1.v4)();
-            this.add(uuid);
             if (this.size === 0) {
                 __classPrivateFieldGet(this, __TextChannelTypingManager_channel, "f").sendTyping();
                 __classPrivateFieldSet(this, __TextChannelTypingManager_typingInterval, setInterval(() => __classPrivateFieldGet(this, __TextChannelTypingManager_channel, "f").sendTyping(), 5000), "f");
                 _typings.set(__classPrivateFieldGet(this, __TextChannelTypingManager_channel, "f"), this);
             }
+            this.add(uuid);
             return uuid;
         }
         endTyping(uuid) {
@@ -102,10 +102,10 @@ class TextBot extends BotDriver_1.default {
             return;
         });
     }
-    getRecentChannelMessages(channel, replaceWithUsername = true) {
+    getRecentChannelMessages(channel, limit, replaceWithUsername = true) {
         return __awaiter(this, void 0, void 0, function* () {
             const t0 = Date.now();
-            const messages = (yield channel.messages.fetch()).map(m => m);
+            const messages = (yield channel.messages.fetch({ limit })).map(m => m);
             channel.messages.cache.clear();
             if (replaceWithUsername) {
                 const mappedUidUsername = yield (0, utils_1.createMappedUidUsername)(messages);

@@ -6,6 +6,7 @@ import { createMappedUidUsername, replaceMessagesUserPingToUsername } from './ut
 import { askWithCurva, dcMessagesToContext, countTokensLength } from '../../utils/gpt';
 import logText from '../../utils/log-text';
 import splitTextToChunks from '../../utils/split-text-to-chunks';
+import type { DCMessage } from '../../types';
 
 const _getTyping = (() => {
   class _TextChannelTypingManager extends Set<string> {
@@ -19,12 +20,12 @@ const _getTyping = (() => {
   
     startTyping() {
       const uuid = generateUUID();
-      this.add(uuid);
       if (this.size === 0) {
         this.#channel.sendTyping();
         this.#typingInterval = setInterval(() => this.#channel.sendTyping(), 5000);
         _typings.set(this.#channel, this);
       }
+      this.add(uuid);
       return uuid;
     }
   
@@ -78,9 +79,9 @@ class TextBot extends BotDriver {
     return;
   }
 
-  async getRecentChannelMessages(channel: TextChannel, replaceWithUsername = true) {
+  async getRecentChannelMessages(channel: TextChannel, limit?: number, replaceWithUsername = true): Promise<DCMessage[]> {
     const t0 = Date.now()
-    const messages = (await channel.messages.fetch()).map(m => m)
+    const messages = (await channel.messages.fetch({ limit })).map(m => m)
     channel.messages.cache.clear()
     if (replaceWithUsername) {
       const mappedUidUsername = await createMappedUidUsername(messages)

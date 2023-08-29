@@ -49,8 +49,13 @@ class ChannelTextBot extends TextBot_1.default {
             return TextBot_1.default.prototype.sendTextMessageInChunks.call(this, arg1, arg2 || '');
         }
     }
-    getRecentChannelMessages() {
-        return TextBot_1.default.prototype.getRecentChannelMessages.call(this, this.channel);
+    getRecentChannelMessages(arg1, arg2, arg3) {
+        if (arg1 !== undefined && typeof arg1 !== 'number') {
+            return TextBot_1.default.prototype.getRecentChannelMessages.call(this, arg1, arg2, arg3);
+        }
+        else {
+            return TextBot_1.default.prototype.getRecentChannelMessages.call(this, this.channel, arg1, arg2);
+        }
     }
     startTyping() {
         return TextBot_1.default.prototype.startTyping.call(this, this.channel);
