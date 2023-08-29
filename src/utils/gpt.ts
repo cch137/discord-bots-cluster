@@ -1,36 +1,6 @@
-import { config as dotenvConfig } from 'dotenv'
-import MindsDB from 'mindsdb-js-sdk'
 import type { DCMessage, OpenAIMessage } from './types'
 import { encoding_for_model } from '@dqbd/tiktoken'
-
-dotenvConfig()
-
-const connection = (async () => {
-  await MindsDB.connect({
-    user: process.env.MINDSDB_EMAIL || '',
-    password: process.env.MINDSDB_PASSWD || ''
-  })
-  return MindsDB
-})()
-
-function stringEscape (text = ''): string {
-  const singleQInText = text.includes('\'')
-  const doubleQInText = text.includes('\"')
-  if (doubleQInText && singleQInText) {
-    return `"${text.replace(new RegExp('\"', 'g'), '\'')}"`
-  }
-  if (singleQInText) {
-    return `"${text}"`
-  }
-  return `'${text}'`
-}
-
-async function askGPT (modelName = 'gpt4_t05_4k', question = '', context = '') {
-  const model = await (await connection).Models.getModel(modelName, 'mindsdb')
-  return (await model!.query({
-    where: [`question=${stringEscape(question)}`, `context=${stringEscape(context)}`]
-  })).value as string
-}
+import { CURVA_API_KEY } from '../constants'
 
 function dcToOpenAIMessages (messages: DCMessage[], clientId: string): OpenAIMessage[] {
   return messages.map((m) => ({
@@ -63,10 +33,20 @@ function dcMessagesToContext (messages: DCMessage[], clientId: string, maxToken 
   return messagesToContext(dcToOpenAIMessages(messages, clientId), maxToken)
 }
 
+async function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
+  const res = await fetch('https://cch137.link/api/curva/express', {
+    method: 'POST',
+    body: JSON.stringify({ key: CURVA_API_KEY, modelName, question, context })
+  })
+  const { answer, error } = await res.json() as { answer: string, error: string }
+  if (error) throw error
+  return answer
+}
+
 export {
   countTokensLength,
   dcToOpenAIMessages,
   messagesToContext,
   dcMessagesToContext,
-}
-export default askGPT  
+  askWithCurva,
+} 

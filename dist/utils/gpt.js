@@ -8,41 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dcMessagesToContext = exports.messagesToContext = exports.dcToOpenAIMessages = exports.countTokensLength = void 0;
-const dotenv_1 = require("dotenv");
-const mindsdb_js_sdk_1 = __importDefault(require("mindsdb-js-sdk"));
+exports.askWithCurva = exports.dcMessagesToContext = exports.messagesToContext = exports.dcToOpenAIMessages = exports.countTokensLength = void 0;
 const tiktoken_1 = require("@dqbd/tiktoken");
-(0, dotenv_1.config)();
-const connection = (() => __awaiter(void 0, void 0, void 0, function* () {
-    yield mindsdb_js_sdk_1.default.connect({
-        user: process.env.MINDSDB_EMAIL || '',
-        password: process.env.MINDSDB_PASSWD || ''
-    });
-    return mindsdb_js_sdk_1.default;
-}))();
-function stringEscape(text = '') {
-    const singleQInText = text.includes('\'');
-    const doubleQInText = text.includes('\"');
-    if (doubleQInText && singleQInText) {
-        return `"${text.replace(new RegExp('\"', 'g'), '\'')}"`;
-    }
-    if (singleQInText) {
-        return `"${text}"`;
-    }
-    return `'${text}'`;
-}
-function askGPT(modelName = 'gpt4_t05_4k', question = '', context = '') {
-    return __awaiter(this, void 0, void 0, function* () {
-        const model = yield (yield connection).Models.getModel(modelName, 'mindsdb');
-        return (yield model.query({
-            where: [`question=${stringEscape(question)}`, `context=${stringEscape(context)}`]
-        })).value;
-    });
-}
+const constants_1 = require("../constants");
 function dcToOpenAIMessages(messages, clientId) {
     return messages.map((m) => ({
         role: m.uid === clientId ? 'assistant' : `@${m.user}`,
@@ -73,4 +42,16 @@ function dcMessagesToContext(messages, clientId, maxToken = 4000) {
     return messagesToContext(dcToOpenAIMessages(messages, clientId), maxToken);
 }
 exports.dcMessagesToContext = dcMessagesToContext;
-exports.default = askGPT;
+function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
+    return __awaiter(this, void 0, void 0, function* () {
+        const res = yield fetch('https://cch137.link/api/curva/express', {
+            method: 'POST',
+            body: JSON.stringify({ key: constants_1.CURVA_API_KEY, modelName, question, context })
+        });
+        const { answer, error } = yield res.json();
+        if (error)
+            throw error;
+        return answer;
+    });
+}
+exports.askWithCurva = askWithCurva;
