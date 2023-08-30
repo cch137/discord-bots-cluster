@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -8,7 +17,9 @@ const bots_1 = __importDefault(require("./bots"));
 const old_site_redirect_1 = __importDefault(require("./website/old-site-redirect"));
 const log_date_1 = __importDefault(require("./utils/log-date"));
 const port = process.env.PORT || 5000;
-bots_1.default.initAll();
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield bots_1.default.initAll();
+}))();
 server_1.server.listen(port, () => {
     (0, old_site_redirect_1.default)();
     console.log(`Server is listening to http://localhost:${port}`);
