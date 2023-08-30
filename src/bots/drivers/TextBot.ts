@@ -52,7 +52,7 @@ class TextBot extends BotDriver {
     await this.connect();
   }
 
-  async respondInChannelAsCurva(channel: TextChannel, prompt = '') {
+  async respondInChannelAsCurva(channel: TextChannel, prompt = '', temperature_string='t03') {
     const typingId = this.startTyping(channel);
     const messages = await this.getRecentChannelMessages(channel);
     const t0 = Date.now();
@@ -60,7 +60,7 @@ class TextBot extends BotDriver {
     logText(`${this.name} Prepare in ${Date.now() - t0}ms`);
     try {
       const t0 = Date.now()
-      const answer = await askWithCurva('gpt4_t03_5k', `${prompt}\n\n${context}`, '')
+      const answer = await askWithCurva(`gpt4_${temperature_string}_5k`, `${prompt}\n\n${context}`, '')
       this.endTyping(channel, typingId)
       this.sendTextMessageInChunks(channel, answer)
       logText(`${this.name} Reply in ${Date.now() - t0}ms`)

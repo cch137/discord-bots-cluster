@@ -21,7 +21,7 @@ class AiBotChatroom extends ChannelTextBotSet<ChannelTextBot> {
     this.#isResponding = true;
     const nextBot = await this.getNextBot();
     this.#lastRespondStartedAt = Date.now();
-    nextBot.respondInChannelAsCurva()
+    nextBot.respondInChannelAsCurva('t10')
       .then(() => {
         this.#isResponding = false;
         if (this.#lastRespondStartedAt + this.cooldownMs < Date.now()) {

@@ -39,8 +39,13 @@ class ChannelTextBot extends TextBot {
     this.channel = channel;
   }
 
-  respondInChannelAsCurva() {
-    return TextBot.prototype.respondInChannelAsCurva.call(this, this.channel, this.prompt);
+  respondInChannelAsCurva(temperature_string?: string): Promise<void>
+  respondInChannelAsCurva(channel: TextChannel, prompt: string, temperature_string?: string): Promise<void>
+  respondInChannelAsCurva(arg1: TextChannel | string = 't03', arg2 = '', arg3 = 't03') {
+    if (typeof arg1 === 'string') {
+      return TextBot.prototype.respondInChannelAsCurva.call(this, this.channel, this.prompt, arg1);
+    }
+    return TextBot.prototype.respondInChannelAsCurva.call(this, arg1, arg2, arg3);
   }
 
   sendTextMessageInChunks(content: string): Promise<void>;

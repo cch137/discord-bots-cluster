@@ -45,7 +45,7 @@ class AiBotChatroom extends ChannelTextBotSet_1.default {
             __classPrivateFieldSet(this, _AiBotChatroom_isResponding, true, "f");
             const nextBot = yield this.getNextBot();
             __classPrivateFieldSet(this, _AiBotChatroom_lastRespondStartedAt, Date.now(), "f");
-            nextBot.respondInChannelAsCurva()
+            nextBot.respondInChannelAsCurva('t10')
                 .then(() => {
                 __classPrivateFieldSet(this, _AiBotChatroom_isResponding, false, "f");
                 if (__classPrivateFieldGet(this, _AiBotChatroom_lastRespondStartedAt, "f") + this.cooldownMs < Date.now()) {

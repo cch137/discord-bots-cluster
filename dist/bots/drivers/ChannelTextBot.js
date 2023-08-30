@@ -38,8 +38,11 @@ class ChannelTextBot extends TextBot_1.default {
             this.channel = channel;
         });
     }
-    respondInChannelAsCurva() {
-        return TextBot_1.default.prototype.respondInChannelAsCurva.call(this, this.channel, this.prompt);
+    respondInChannelAsCurva(arg1 = 't03', arg2 = '', arg3 = 't03') {
+        if (typeof arg1 === 'string') {
+            return TextBot_1.default.prototype.respondInChannelAsCurva.call(this, this.channel, this.prompt, arg1);
+        }
+        return TextBot_1.default.prototype.respondInChannelAsCurva.call(this, arg1, arg2, arg3);
     }
     sendTextMessageInChunks(arg1, arg2) {
         if (typeof arg1 === 'string') {
