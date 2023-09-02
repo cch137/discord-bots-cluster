@@ -14,21 +14,21 @@ const bots = {
         return Promise.all([
             kobayashi_natsumi_1.default.init(),
             mr_matthew_1.default.init(),
-            brain1_vs_brain2_1.default.init(),
+            // Brain1VsBrain2.init(),
         ]);
     },
     connectAll() {
         return Promise.all([
             kobayashi_natsumi_1.default.connect(),
             mr_matthew_1.default.connect(),
-            brain1_vs_brain2_1.default.connect(),
+            // Brain1VsBrain2.connect(),
         ]);
     },
     disconnectAll() {
         return Promise.all([
             kobayashi_natsumi_1.default.disconnect(),
             mr_matthew_1.default.disconnect(),
-            brain1_vs_brain2_1.default.disconnect(),
+            // Brain1VsBrain2.disconnect(),
         ]);
     },
 };

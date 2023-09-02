@@ -10,21 +10,21 @@ const bots = {
     return Promise.all([
       KobayashiNatsumi.init(),
       MrMatthew.init(),
-      Brain1VsBrain2.init(),
+      // Brain1VsBrain2.init(),
     ])
   },
   connectAll () {
     return Promise.all([
       KobayashiNatsumi.connect(),
       MrMatthew.connect(),
-      Brain1VsBrain2.connect(),
+      // Brain1VsBrain2.connect(),
     ])
   },
   disconnectAll () {
     return Promise.all([
       KobayashiNatsumi.disconnect(),
       MrMatthew.disconnect(),
-      Brain1VsBrain2.disconnect(),
+      // Brain1VsBrain2.disconnect(),
     ])
   },
 }
