@@ -63,7 +63,7 @@ class TextBot extends BotDriver {
       const answer = await askWithCurva(`gpt4_${temperature_string}_5k`, `${prompt}\n\n${context}`, '')
       this.endTyping(channel, typingId)
       this.sendTextMessageInChunks(channel, answer)
-      logText(`${this.name} Reply in ${Date.now() - t0}ms`)
+      logText(`${this.name} Replied in ${Date.now() - t0}ms`)
     } catch (err) {
       this.endTyping(channel, typingId)
       logText(`${this.name} Error when reply: ${err}`)

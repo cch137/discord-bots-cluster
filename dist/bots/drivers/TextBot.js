@@ -84,7 +84,7 @@ class TextBot extends BotDriver_1.default {
                 const answer = yield (0, gpt_1.askWithCurva)(`gpt4_${temperature_string}_5k`, `${prompt}\n\n${context}`, '');
                 this.endTyping(channel, typingId);
                 this.sendTextMessageInChunks(channel, answer);
-                (0, log_text_1.default)(`${this.name} Reply in ${Date.now() - t0}ms`);
+                (0, log_text_1.default)(`${this.name} Replied in ${Date.now() - t0}ms`);
             }
             catch (err) {
                 this.endTyping(channel, typingId);
