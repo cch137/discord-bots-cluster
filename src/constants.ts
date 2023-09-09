@@ -1,7 +1,5 @@
-import { config as dotenvConfig } from 'dotenv'
-
-dotenvConfig()
-
+const API_ORIGIN = process.env.API_ORIGIN as string
+const CH4_TOKEN = process.env.CH4_TOKEN as string
 const GUILD_ID = process.env.GUILD_ID as string
 const BOT_TOKEN1 = process.env.BOT_TOKEN1 as string
 const BOT_TOKEN2 = process.env.BOT_TOKEN2 as string
@@ -12,6 +10,12 @@ const CHANNEL_ID2 = process.env.CHANNEL_ID2 as string
 const BRAINS_CHANNEL_ID = process.env.BRAINS_CHANNEL_ID as string
 const CURVA_API_KEY = process.env.CURVA_API_KEY as string
 
+if (typeof API_ORIGIN !== 'string') {
+  throw 'Please provide API_ORIGIN in .env file'
+}
+if (typeof CH4_TOKEN !== 'string') {
+  throw 'Please provide CH4_TOKEN in .env file'
+}
 if (typeof GUILD_ID !== 'string') {
   throw 'Please provide GUILD_ID in .env file'
 }
@@ -41,6 +45,8 @@ if (typeof CURVA_API_KEY !== 'string') {
 }
 
 export {
+  API_ORIGIN,
+  CH4_TOKEN,
   GUILD_ID,
   BOT_TOKEN1,
   BOT_TOKEN2,

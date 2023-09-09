@@ -1,9 +1,6 @@
-import { config as dotenvConfig } from 'dotenv'
 import express from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';
-
-dotenvConfig()
 
 const app = express();
 const server = http.createServer(app);

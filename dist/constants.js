@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CURVA_API_KEY = exports.BRAINS_CHANNEL_ID = exports.CHANNEL_ID2 = exports.CHANNEL_ID1 = exports.BRAIN2_TOKEN = exports.BRAIN1_TOKEN = exports.BOT_TOKEN2 = exports.BOT_TOKEN1 = exports.GUILD_ID = void 0;
-const dotenv_1 = require("dotenv");
-(0, dotenv_1.config)();
+exports.CURVA_API_KEY = exports.BRAINS_CHANNEL_ID = exports.CHANNEL_ID2 = exports.CHANNEL_ID1 = exports.BRAIN2_TOKEN = exports.BRAIN1_TOKEN = exports.BOT_TOKEN2 = exports.BOT_TOKEN1 = exports.GUILD_ID = exports.CH4_TOKEN = exports.API_ORIGIN = void 0;
+const API_ORIGIN = process.env.API_ORIGIN;
+exports.API_ORIGIN = API_ORIGIN;
+const CH4_TOKEN = process.env.CH4_TOKEN;
+exports.CH4_TOKEN = CH4_TOKEN;
 const GUILD_ID = process.env.GUILD_ID;
 exports.GUILD_ID = GUILD_ID;
 const BOT_TOKEN1 = process.env.BOT_TOKEN1;
@@ -21,6 +23,12 @@ const BRAINS_CHANNEL_ID = process.env.BRAINS_CHANNEL_ID;
 exports.BRAINS_CHANNEL_ID = BRAINS_CHANNEL_ID;
 const CURVA_API_KEY = process.env.CURVA_API_KEY;
 exports.CURVA_API_KEY = CURVA_API_KEY;
+if (typeof API_ORIGIN !== 'string') {
+    throw 'Please provide API_ORIGIN in .env file';
+}
+if (typeof CH4_TOKEN !== 'string') {
+    throw 'Please provide CH4_TOKEN in .env file';
+}
 if (typeof GUILD_ID !== 'string') {
     throw 'Please provide GUILD_ID in .env file';
 }
