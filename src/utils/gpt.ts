@@ -2,9 +2,9 @@ import type { DCMessage, OpenAIMessage } from '../types'
 import { encoding_for_model } from '@dqbd/tiktoken'
 import { CURVA_API_KEY } from '../constants'
 
-function dcToOpenAIMessages (messages: DCMessage[], clientId: string): OpenAIMessage[] {
+function dcToOpenAIMessages (messages: DCMessage[], clientId?: string): OpenAIMessage[] {
   return messages.map((m) => ({
-    role: `${m.user}${m.uid === clientId ? ' (You)' : ''}`,
+    role: clientId !== undefined && m.uid === clientId ? 'assistant' : m.user,
     content: m.content
   }))
 }
