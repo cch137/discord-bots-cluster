@@ -5,15 +5,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const kobayashi_natsumi_1 = __importDefault(require("./kobayashi-natsumi"));
 const mr_matthew_1 = __importDefault(require("./mr-matthew"));
+const yamazaki_1 = __importDefault(require("./yamazaki"));
 const brain1_vs_brain2_1 = __importDefault(require("./brain1-vs-brain2"));
 const bots = {
     KobayashiNatsumi: kobayashi_natsumi_1.default,
     MrMatthew: mr_matthew_1.default,
     Brain1VsBrain2: brain1_vs_brain2_1.default,
+    Yamazaki: yamazaki_1.default,
     initAll() {
         return Promise.all([
             kobayashi_natsumi_1.default.init(),
             mr_matthew_1.default.init(),
+            yamazaki_1.default.init(),
             // Brain1VsBrain2.init(),
         ]);
     },
@@ -21,6 +24,7 @@ const bots = {
         return Promise.all([
             kobayashi_natsumi_1.default.connect(),
             mr_matthew_1.default.connect(),
+            yamazaki_1.default.connect(),
             // Brain1VsBrain2.connect(),
         ]);
     },
@@ -28,6 +32,7 @@ const bots = {
         return Promise.all([
             kobayashi_natsumi_1.default.disconnect(),
             mr_matthew_1.default.disconnect(),
+            yamazaki_1.default.disconnect(),
             // Brain1VsBrain2.disconnect(),
         ]);
     },

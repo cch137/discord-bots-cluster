@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CURVA_API_KEY = exports.BRAINS_CHANNEL_ID = exports.CHANNEL_ID2 = exports.CHANNEL_ID1 = exports.BRAIN2_TOKEN = exports.BRAIN1_TOKEN = exports.BOT_TOKEN2 = exports.BOT_TOKEN1 = exports.GUILD_ID = exports.CH4_TOKEN = exports.API_ORIGIN = void 0;
+exports.CURVA_API_KEY = exports.BRAINS_CHANNEL_ID = exports.CHANNEL_ID3 = exports.CHANNEL_ID2 = exports.CHANNEL_ID1 = exports.BRAIN2_TOKEN = exports.BRAIN1_TOKEN = exports.BOT_TOKEN3 = exports.BOT_TOKEN2 = exports.BOT_TOKEN1 = exports.GUILD_ID = exports.CH4_TOKEN = exports.API_ORIGIN = void 0;
 const API_ORIGIN = process.env.API_ORIGIN;
 exports.API_ORIGIN = API_ORIGIN;
 const CH4_TOKEN = process.env.CH4_TOKEN;
@@ -11,6 +11,8 @@ const BOT_TOKEN1 = process.env.BOT_TOKEN1;
 exports.BOT_TOKEN1 = BOT_TOKEN1;
 const BOT_TOKEN2 = process.env.BOT_TOKEN2;
 exports.BOT_TOKEN2 = BOT_TOKEN2;
+const BOT_TOKEN3 = process.env.BOT_TOKEN3;
+exports.BOT_TOKEN3 = BOT_TOKEN3;
 const BRAIN1_TOKEN = process.env.BRAIN1_TOKEN;
 exports.BRAIN1_TOKEN = BRAIN1_TOKEN;
 const BRAIN2_TOKEN = process.env.BRAIN2_TOKEN;
@@ -19,6 +21,8 @@ const CHANNEL_ID1 = process.env.CHANNEL_ID1;
 exports.CHANNEL_ID1 = CHANNEL_ID1;
 const CHANNEL_ID2 = process.env.CHANNEL_ID2;
 exports.CHANNEL_ID2 = CHANNEL_ID2;
+const CHANNEL_ID3 = process.env.CHANNEL_ID3;
+exports.CHANNEL_ID3 = CHANNEL_ID3;
 const BRAINS_CHANNEL_ID = process.env.BRAINS_CHANNEL_ID;
 exports.BRAINS_CHANNEL_ID = BRAINS_CHANNEL_ID;
 const CURVA_API_KEY = process.env.CURVA_API_KEY;
@@ -38,6 +42,9 @@ if (typeof BOT_TOKEN1 !== 'string') {
 if (typeof BOT_TOKEN2 !== 'string') {
     throw 'Please provide BOT_TOKEN2 in .env file';
 }
+if (typeof BOT_TOKEN3 !== 'string') {
+    throw 'Please provide BOT_TOKEN3 in .env file';
+}
 if (typeof BRAIN1_TOKEN !== 'string') {
     throw 'Please provide BRAIN1_TOKEN in .env file';
 }
@@ -49,6 +56,9 @@ if (typeof CHANNEL_ID1 !== 'string') {
 }
 if (typeof CHANNEL_ID2 !== 'string') {
     throw 'Please provide CHANNEL_ID2 in .env file';
+}
+if (typeof CHANNEL_ID3 !== 'string') {
+    throw 'Please provide CHANNEL_ID3 in .env file';
 }
 if (typeof BRAINS_CHANNEL_ID !== 'string') {
     throw 'Please provide BRAINS_CHANNEL_ID in .env file';

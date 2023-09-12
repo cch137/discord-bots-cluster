@@ -29,7 +29,7 @@ function messagesToContext (messages: OpenAIMessage[], maxToken = 4000): string 
   return _messagesToContext(countedMessages.map(m => ({ role: m.role, content: m.content })))
 }
 
-function dcMessagesToContext (messages: DCMessage[], clientId: string, maxToken = 4000): string {
+function dcMessagesToContext (messages: DCMessage[], clientId?: string, maxToken = 4000): string {
   return messagesToContext(dcToOpenAIMessages(messages, clientId), maxToken)
 }
 

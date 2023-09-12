@@ -56,7 +56,8 @@ class TextBot extends BotDriver {
     const typingId = this.startTyping(channel);
     const messages = await this.getRecentChannelMessages(channel);
     const t0 = Date.now();
-    const context = dcMessagesToContext(messages, this.id, 4800 - countTokensLength(prompt));
+    // id 設為 undefined, 而不傳入。
+    const context = dcMessagesToContext(messages, undefined, 4800 - countTokensLength(prompt));
     logText(`${this.name} Prepare in ${Date.now() - t0}ms`);
     try {
       const t0 = Date.now()
