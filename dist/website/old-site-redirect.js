@@ -19,11 +19,11 @@ const oldSiteRedirect = express_1.default.Router();
 oldSiteRedirect.use('*', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const tokenItem = (req.headers.cookie || '').split(';').map(c => c.split('=').map(i => i.trim())).find(c => c[0] === 'token');
     if (tokenItem === undefined) {
-        res.redirect('https://cch137.link');
+        res.redirect('https://ch4.cch137.link');
         return;
     }
     const token = decodeURIComponent(tokenItem[1]);
     const { id } = (yield axios_1.default.put(`https://${constants_1.API_ORIGIN}/lockers`, { item: token })).data;
-    res.redirect(`https://cch137.link/api/auth/transfer?passport=${id}`);
+    res.redirect(`https://ch4.cch137.link/api/auth/transfer?passport=${id}`);
 }));
 exports.default = oldSiteRedirect;

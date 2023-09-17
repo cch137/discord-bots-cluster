@@ -140,7 +140,7 @@ function connect() {
             function logStatus() {
                 var _a, _b, _c;
                 return __awaiter(this, void 0, void 0, function* () {
-                    const result = (yield axios_1.default.get('https://cch137.link/api/status')).data;
+                    const result = (yield axios_1.default.get('https://ch4.cch137.link/api/status')).data;
                     const lastMessageInChannel = [...yield statusChannel.messages.fetch({ limit: 1 })][0] || [];
                     const targetMessage = ((_b = (_a = lastMessageInChannel[1]) === null || _a === void 0 ? void 0 : _a.author) === null || _b === void 0 ? void 0 : _b.id) === ((_c = client === null || client === void 0 ? void 0 : client.user) === null || _c === void 0 ? void 0 : _c.id)
                         ? lastMessageInChannel[1]
