@@ -122,10 +122,10 @@ async function connect () {
       targetMessage.edit({
         content: '',
         embeds: [
-          new EmbedBuilder().setFields(
-            { name: 'Models:', value: result.models.map(m => `${getStatusEmoji(m[1])} ${m[0]} (${Math.round(m[1] * 100)}%)`).join('\n') },
+          new EmbedBuilder().setFields(...[
+            { name: result.models.length ? 'Models:' : '', value: result.models.map(m => `${getStatusEmoji(m[1])} ${m[0]} (${Math.round(m[1] * 100)}%)`).join('\n') },
             { name: 'Database:', value: [`Total Messages: ${result.totalMessages}`, `Total Users: ${result.totalUsers}`, `Total Size: ${formatBytes(result.dataSize)}`].join('\n') },
-          )
+          ].filter(f => f.name))
         ]
       })
     }
