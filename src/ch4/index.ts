@@ -104,7 +104,7 @@ async function connect () {
     client.on('guildMemberRemove', () => ch4UpdateMemberCount())
   })();
 
-  setTimeout(async () => {
+  (async () => {
     const statusChannel = await client!.channels.fetch('1146482763214635148') as TextChannel
 
     function getStatusEmoji(value: number) {
@@ -132,8 +132,7 @@ async function connect () {
 
     logStatus()
     intervalTasks.push(setInterval(() => logStatus(), 5 * 60 * 1000))
-
-  }, 10000);
+  })();
 
   try {
     client.user?.setActivity({

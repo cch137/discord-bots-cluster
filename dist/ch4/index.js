@@ -128,7 +128,7 @@ function connect() {
             client.on('guildMemberAdd', () => ch4UpdateMemberCount());
             client.on('guildMemberRemove', () => ch4UpdateMemberCount());
         }))();
-        setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+        (() => __awaiter(this, void 0, void 0, function* () {
             const statusChannel = yield client.channels.fetch('1146482763214635148');
             function getStatusEmoji(value) {
                 if (value >= 0.93)
@@ -155,7 +155,7 @@ function connect() {
             }
             logStatus();
             intervalTasks.push(setInterval(() => logStatus(), 5 * 60 * 1000));
-        }), 10000);
+        }))();
         try {
             (_a = client.user) === null || _a === void 0 ? void 0 : _a.setActivity({
                 name: 'Welcome to CH4!',
