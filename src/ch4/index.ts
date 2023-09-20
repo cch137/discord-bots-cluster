@@ -131,7 +131,7 @@ async function connect () {
     }
 
     logStatus()
-    intervalTasks.push(setInterval(() => logStatus(), 5 * 60 * 1000))
+    intervalTasks.push(setInterval(() => logStatus(), 1 * 60 * 1000))
   })();
 
   try {
