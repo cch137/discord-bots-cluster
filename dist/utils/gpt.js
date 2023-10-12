@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.askWithCurva = exports.dcMessagesToContext = exports.messagesToContext = exports.dcToOpenAIMessages = exports.countTokensLength = void 0;
+exports.askWithFGPT = exports.dcMessagesToContext = exports.messagesToContext = exports.dcToOpenAIMessages = exports.countTokensLength = void 0;
 const tiktoken_1 = require("@dqbd/tiktoken");
 const constants_1 = require("../constants");
 function dcToOpenAIMessages(messages, clientId) {
@@ -42,6 +42,7 @@ function dcMessagesToContext(messages, clientId, maxToken = 4000) {
     return messagesToContext(dcToOpenAIMessages(messages, clientId), maxToken);
 }
 exports.dcMessagesToContext = dcMessagesToContext;
+/** DEPRECATED */
 function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
     return __awaiter(this, void 0, void 0, function* () {
         question = question.trim();
@@ -56,4 +57,17 @@ function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') 
         return answer;
     });
 }
-exports.askWithCurva = askWithCurva;
+function askWithFGPT(question = 'Hi') {
+    return __awaiter(this, void 0, void 0, function* () {
+        question = question.trim();
+        const res = yield fetch('https://ch4.cch137.link/api/curva/express-fgpt', {
+            method: 'POST',
+            body: JSON.stringify({ key: constants_1.CURVA_API_KEY, question })
+        });
+        const { answer, error } = yield res.json();
+        if (error)
+            throw error;
+        return answer;
+    });
+}
+exports.askWithFGPT = askWithFGPT;

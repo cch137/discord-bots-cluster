@@ -33,6 +33,7 @@ function dcMessagesToContext (messages: DCMessage[], clientId?: string, maxToken
   return messagesToContext(dcToOpenAIMessages(messages, clientId), maxToken)
 }
 
+/** DEPRECATED */
 async function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
   question = question.trim();
   context = context.trim();
@@ -45,10 +46,21 @@ async function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context 
   return answer
 }
 
+async function askWithFGPT(question = 'Hi') {
+  question = question.trim();
+  const res = await fetch('https://ch4.cch137.link/api/curva/express-fgpt', {
+    method: 'POST',
+    body: JSON.stringify({ key: CURVA_API_KEY, question })
+  });
+  const { answer, error } = await res.json() as { answer: string, error: string }
+  if (error) throw error
+  return answer
+}
+
 export {
   countTokensLength,
   dcToOpenAIMessages,
   messagesToContext,
   dcMessagesToContext,
-  askWithCurva,
+  askWithFGPT,
 } 

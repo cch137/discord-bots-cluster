@@ -3,7 +3,7 @@ import { EmbedBuilder } from 'discord.js'
 import { v4 as generateUUID } from 'uuid';
 import BotDriver from './BotDriver';
 import { createMappedUidUsername, replaceMessagesUserPingToUsername } from './utils';
-import { askWithCurva, dcMessagesToContext, countTokensLength } from '../../utils/gpt';
+import { askWithFGPT, dcMessagesToContext, countTokensLength } from '../../utils/gpt';
 import logText from '../../utils/log-text';
 import splitTextToChunks from '../../utils/split-text-to-chunks';
 import type { DCMessage } from '../../types';
@@ -61,7 +61,7 @@ class TextBot extends BotDriver {
     logText(`${this.name} Prepare in ${Date.now() - t0}ms`);
     try {
       const t0 = Date.now()
-      const answer = await askWithCurva(`gpt4_${temperature_string}_5k`, `${prompt}\n\n${context}`, '')
+      const answer = await askWithFGPT(`${prompt}\n\n${context}`)
       this.endTyping(channel, typingId)
       this.sendTextMessageInChunks(channel, answer)
       logText(`${this.name} Replied in ${Date.now() - t0}ms`)
