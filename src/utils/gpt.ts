@@ -37,7 +37,7 @@ function dcMessagesToContext (messages: DCMessage[], clientId?: string, maxToken
 async function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') {
   question = question.trim();
   context = context.trim();
-  const res = await fetch('https://ch4.cch137.link/api/curva/express', {
+  const res = await fetch('https://ch4.us.to/api/curva/express', {
     method: 'POST',
     body: JSON.stringify({ key: CURVA_API_KEY, modelName, question, context })
   });
@@ -48,7 +48,7 @@ async function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context 
 
 async function askWithFGPT(question = 'Hi') {
   question = question.trim();
-  const res = await fetch('https://ch4.cch137.link/api/curva/express-fgpt', {
+  const res = await fetch('https://ch4.us.to/api/curva/express-fgpt', {
     method: 'POST',
     body: JSON.stringify({ key: CURVA_API_KEY, question })
   });

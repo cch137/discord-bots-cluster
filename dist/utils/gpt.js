@@ -47,7 +47,7 @@ function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') 
     return __awaiter(this, void 0, void 0, function* () {
         question = question.trim();
         context = context.trim();
-        const res = yield fetch('https://ch4.cch137.link/api/curva/express', {
+        const res = yield fetch('https://ch4.us.to/api/curva/express', {
             method: 'POST',
             body: JSON.stringify({ key: constants_1.CURVA_API_KEY, modelName, question, context })
         });
@@ -60,7 +60,7 @@ function askWithCurva(modelName = 'gpt4_t05_4k', question = 'Hi', context = '') 
 function askWithFGPT(question = 'Hi') {
     return __awaiter(this, void 0, void 0, function* () {
         question = question.trim();
-        const res = yield fetch('https://ch4.cch137.link/api/curva/express-fgpt', {
+        const res = yield fetch('https://ch4.us.to/api/curva/express-fgpt', {
             method: 'POST',
             body: JSON.stringify({ key: constants_1.CURVA_API_KEY, question })
         });
