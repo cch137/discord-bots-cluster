@@ -114,7 +114,7 @@ async function connect () {
     }
 
     async function logStatus() {
-      const result = (await axios.get('https://ch4.us.to/api/status')).data as { models: [string,number][], totalMessages: number, totalUsers: number, dataSize: number }
+      const result = (await axios.get('https://ch4.us.to/api/status')).data as { models: [string,number][], totalMessages: number, totalRegisteredUsers: number, dataSize: number }
       const lastMessageInChannel = [...await statusChannel.messages.fetch({ limit: 1 })][0] || []
       const targetMessage = lastMessageInChannel[1]?.author?.id === client?.user?.id
         ? lastMessageInChannel[1]
@@ -124,7 +124,7 @@ async function connect () {
         embeds: [
           new EmbedBuilder().setFields(...[
             { name: result.models.length ? 'Models:' : '', value: result.models.map(m => `${getStatusEmoji(m[1])} ${m[0]} (${Math.round(m[1] * 100)}%)`).join('\n') },
-            { name: 'Database:', value: [`Total Messages: ${result.totalMessages}`, `Total Users: ${result.totalUsers}`, `Total Size: ${formatBytes(result.dataSize)}`].join('\n') },
+            { name: 'Database:', value: [`Total Messages: ${result.totalMessages}`, `Registered Users: ${result.totalRegisteredUsers}`, `Data Size: ${formatBytes(result.dataSize)}`].join('\n') },
           ].filter(f => f.name))
         ]
       })
