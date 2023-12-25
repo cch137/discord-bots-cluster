@@ -108,8 +108,8 @@ async function connect () {
     const statusChannel = await client!.channels.fetch('1146482763214635148') as TextChannel
 
     function getStatusEmoji(value: number) {
-      if (value >= 0.93) return '🟢';
-      if (value >= 0.66) return '🟡';
+      if (value >= 0.85) return '🟢';
+      if (value >= 0.6) return '🟡';
       return '🔴';
     }
 

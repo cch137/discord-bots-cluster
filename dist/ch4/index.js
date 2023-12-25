@@ -131,9 +131,9 @@ function connect() {
         (() => __awaiter(this, void 0, void 0, function* () {
             const statusChannel = yield client.channels.fetch('1146482763214635148');
             function getStatusEmoji(value) {
-                if (value >= 0.93)
+                if (value >= 0.85)
                     return '🟢';
-                if (value >= 0.66)
+                if (value >= 0.6)
                     return '🟡';
                 return '🔴';
             }
